@@ -1,19 +1,11 @@
 #include <stdio.h>
-#include <limits.h>
 
-// Function to find the M-th maximum and N-th minimum numbers in an array
-void findMthMaxNthMin(int arr[], int size, int M, int N) {
-    // Check for illegal input
-    if (M >= size || N >= size || M < 0 || N < 0 || M == N) {
-        printf("(illegal input)\n");
-        return;
-    }
-
-    // Sort the array in ascending order
+void findMaxMin(int arr[], int size, int m, int n, int *max, int *min) {
+    
     for (int i = 0; i < size - 1; i++) {
         for (int j = 0; j < size - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                // Swap if the current element is greater than the next element
+                
                 int temp = arr[j];
                 arr[j] = arr[j + 1];
                 arr[j + 1] = temp;
@@ -21,40 +13,52 @@ void findMthMaxNthMin(int arr[], int size, int M, int N) {
         }
     }
 
-    // Find the M-th maximum and N-th minimum numbers
-    int MthMax = arr[size - M - 1];
-    int NthMin = arr[N];
-
-    // Calculate the sum and difference
-    int sum = MthMax + NthMin;
-    int diff = MthMax - NthMin;
-
-    // Print the results
-    printf("%d\n", sum);
-    printf("%d\n", diff);
+   
+    *max = arr[size - m];
+    *min = arr[n - 1];
 }
 
 int main() {
-    // Test cases
-    int arr1[] = {16, 16, 16, 16, 16};
-    int size1 = sizeof(arr1) / sizeof(arr1[0]);
-    findMthMaxNthMin(arr1, size1, 0, 1);
+    int size, m, n;
+    
+    
+    do {
+        printf("Enter the size of the array (should be greater than 1): ");
+        scanf("%d", &size);
+    } while (size <= 1);
 
-    int arr2[] = {0, 0, 0, 0};
-    int size2 = sizeof(arr2) / sizeof(arr2[0]);
-    findMthMaxNthMin(arr2, size2, 1, 2);
+    
+    int arr[size];
+    printf("Enter the array elements:\n");
+    for (int i = 0; i < size; i++) {
+        printf("Element %d: ", i + 1);
+        scanf("%d", &arr[i]);
+    }
 
-    int arr3[] = {-12, -78, -35, -42, 85};
-    int size3 = sizeof(arr3) / sizeof(arr3[0]);
-    findMthMaxNthMin(arr3, size3, 3, 3);
+   
+    do {
+        printf("Enter the value of m (1 <= m <= %d): ", size);
+        scanf("%d", &m);
+    } while (m < 1 || m > size);
 
-    int arr4[] = {15, 19, 34, 56, 12};
-    int size4 = sizeof(arr4) / sizeof(arr4[0]);
-    findMthMaxNthMin(arr4, size4, 6, -3);
+    do {
+        printf("Enter the value of n (1 <= n <= %d): ", size);
+        scanf("%d", &n);
+    } while (n < 1 || n > size);
 
-    int arr5[] = {85, 45, 65, 75, 95};
-    int size5 = sizeof(arr5) / sizeof(arr5[0]);
-    findMthMaxNthMin(arr5, size5, 5, 2);
+    int max, min;
+
+    
+    findMaxMin(arr, size, m, n, &max, &min);
+
+   
+    int sum = max + min;
+    int diff = max - min;
+
+    printf("The %dth maximum number is: %d\n", m, max);
+    printf("The %dth minimum number is: %d\n", n, min);
+    printf("Sum of the %dth maximum and %dth minimum numbers: %d\n", m, n, sum);
+    printf("Difference between the %dth maximum and %dth minimum numbers: %d\n", m, n, diff);
 
     return 0;
-}
+} 
